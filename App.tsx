@@ -9,8 +9,27 @@ import { Menu, X, ChevronRight, BookOpen, CheckSquare, Sun, Moon } from 'lucide-
 const App: React.FC = () => {
   const [activeChapterId, setActiveChapterId] = useState<string>(HANDBOOK_CONTENT[0].id);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [completedSections, setCompletedSections] = useState<string[]>([]);
-  const [darkMode, setDarkMode] = useState(false);
+  
+  // Safe storage initialization for Completed Sections
+  const [completedSections, setCompletedSections] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('c_handbook_progress');
+      return saved ? JSON.parse(saved) : [];
+    } catch (error) {
+      console.warn('Storage access failed:', error);
+      return [];
+    }
+  });
+
+  // Safe storage initialization for Dark Mode
+  const [darkMode, setDarkMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem('c_handbook_theme');
+      return saved === 'dark';
+    } catch (error) {
+      return false;
+    }
+  });
 
   const activeChapter = HANDBOOK_CONTENT.find(c => c.id === activeChapterId) || HANDBOOK_CONTENT[0];
 
@@ -20,7 +39,23 @@ const App: React.FC = () => {
     } else {
       document.documentElement.classList.remove('dark');
     }
+    
+    // Try to save theme preference
+    try {
+      localStorage.setItem('c_handbook_theme', darkMode ? 'dark' : 'light');
+    } catch (error) {
+      // Ignore storage errors
+    }
   }, [darkMode]);
+
+  // Persist progress
+  useEffect(() => {
+    try {
+      localStorage.setItem('c_handbook_progress', JSON.stringify(completedSections));
+    } catch (error) {
+      // Ignore storage errors
+    }
+  }, [completedSections]);
 
   // Scroll to top when chapter changes
   useEffect(() => {
