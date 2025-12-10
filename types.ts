@@ -11,11 +11,12 @@ export interface PracticeQuestionBlock {
   hint?: string;
 }
 
-export interface ContentBlock {
-  type: BlockType;
-  content: string | string[] | QuizBlock | PracticeQuestionBlock;
-  language?: string; // For code blocks
-}
+// Discriminated Union for stricter type safety
+export type ContentBlock = 
+  | { type: 'paragraph' | 'header' | 'subheader' | 'code' | 'note' | 'image-placeholder'; content: string; language?: string }
+  | { type: 'list'; content: string[]; language?: string }
+  | { type: 'quiz'; content: QuizBlock; language?: string }
+  | { type: 'practice-question'; content: PracticeQuestionBlock; language?: string };
 
 export interface Section {
   id: string;

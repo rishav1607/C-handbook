@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ContentBlock, QuizBlock, PracticeQuestionBlock } from '../types';
-import { Copy, Check, Terminal, HelpCircle, AlertCircle, ChevronDown, ChevronUp, Play } from 'lucide-react';
+import { Copy, Check, Terminal, HelpCircle, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
 
 const syntaxHighlight = (code: string) => {
   // Simple regex-based highlighter for C
@@ -186,21 +186,21 @@ const PracticeQuestionComponent = ({ data }: { data: PracticeQuestionBlock }) =>
 export const ContentRenderer: React.FC<{ block: ContentBlock }> = ({ block }) => {
   switch (block.type) {
     case 'paragraph':
-      return <p className="mb-4 text-lg leading-relaxed font-medium text-gray-800 dark:text-gray-200">{block.content as string}</p>;
+      return <p className="mb-4 text-lg leading-relaxed font-medium text-gray-800 dark:text-gray-200">{block.content}</p>;
     
     case 'header':
-      return <h2 className="text-3xl font-black mb-6 mt-10 border-b-4 border-black dark:border-white inline-block pr-10 uppercase bg-[#FFD93D] text-black p-2 transform -rotate-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_#fff]">{block.content as string}</h2>;
+      return <h2 className="text-3xl font-black mb-6 mt-10 border-b-4 border-black dark:border-white inline-block pr-10 uppercase bg-[#FFD93D] text-black p-2 transform -rotate-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_#fff]">{block.content}</h2>;
     
     case 'subheader':
-      return <h3 className="text-xl font-bold mb-3 mt-6 text-[#FF6B6B] flex items-center gap-2 before:content-['#'] before:text-black dark:before:text-white">{block.content as string}</h3>;
+      return <h3 className="text-xl font-bold mb-3 mt-6 text-[#FF6B6B] flex items-center gap-2 before:content-['#'] before:text-black dark:before:text-white">{block.content}</h3>;
     
     case 'code':
-      return <CodeBlock code={block.content as string} />;
+      return <CodeBlock code={block.content} />;
     
     case 'list':
       return (
         <ul className="list-none space-y-3 mb-6 ml-2">
-          {(block.content as string[]).map((item, idx) => (
+          {block.content.map((item, idx) => (
             <li key={idx} className="flex items-start gap-3">
               <span className="bg-black dark:bg-white text-white dark:text-black min-w-[24px] h-[24px] flex items-center justify-center font-bold text-sm border-2 border-black dark:border-white mt-1">
                 {idx + 1}
@@ -217,16 +217,16 @@ export const ContentRenderer: React.FC<{ block: ContentBlock }> = ({ block }) =>
             <AlertCircle className="shrink-0 mt-1" size={24} />
             <div>
               <span className="font-black block mb-1">NOTE</span>
-              <p className="font-medium">{block.content as string}</p>
+              <p className="font-medium">{block.content}</p>
             </div>
          </div>
        );
 
     case 'quiz':
-      return <QuizComponent data={block.content as QuizBlock} />;
+      return <QuizComponent data={block.content} />;
 
     case 'practice-question':
-      return <PracticeQuestionComponent data={block.content as PracticeQuestionBlock} />;
+      return <PracticeQuestionComponent data={block.content} />;
 
     default:
       return null;
