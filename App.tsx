@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { HANDBOOK_CONTENT } from './constants';
-import { Section, Chapter } from './types';
+import { Section } from './types';
 import { NeoCard } from './components/NeoCard';
 import { NeoButton } from './components/NeoButton';
 import { ContentRenderer } from './components/ContentRenderer';
